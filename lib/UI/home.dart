@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:herevolution/UI/route_page.dart';
 import 'package:herevolution/config_api/config_repo.dart';
 
 class MyApp extends StatelessWidget {
@@ -74,6 +75,10 @@ class _AddressFormState extends ConsumerState<AddressForm> {
                 print('Address 1: ${_address1Controller.text}');
                 print('Address 2: ${_address2Controller.text}');
                 print('Vehicle: ${_vehicleController.text}');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RoutePage()),
+                );
               },
               child: Text('Submit'),
             ),

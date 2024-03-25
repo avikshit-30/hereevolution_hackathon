@@ -1,294 +1,318 @@
-// To parse this JSON data, do
-//
-//     final configModel = configModelFromJson(jsonString);
-
-import 'dart:convert';
-
-ConfigModel configModelFromJson(String str) =>
-    ConfigModel.fromJson(json.decode(str));
-
-String configModelToJson(ConfigModel data) => json.encode(data.toJson());
-
 class ConfigModel {
-  List<Route> routes;
+  List<Routes>? routes;
 
-  ConfigModel({
-    required this.routes,
-  });
+  ConfigModel({this.routes});
 
-  factory ConfigModel.fromJson(Map<String, dynamic> json) => ConfigModel(
-        routes: List<Route>.from(json["routes"].map((x) => Route.fromJson(x))),
-      );
+  ConfigModel.fromJson(Map<String, dynamic> json) {
+    if (json['routes'] != null) {
+      routes = <Routes>[];
+      json['routes'].forEach((v) {
+        routes!.add(new Routes.fromJson(v));
+      });
+    }
+  }
 
-  Map<String, dynamic> toJson() => {
-        "routes": List<dynamic>.from(routes.map((x) => x.toJson())),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.routes != null) {
+      data['routes'] = this.routes!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+
   @override
   String toString() {
-    return 'ConfigModel(routes: $routes)';
+    return 'ConfigModel{routes: $routes}';
   }
 }
 
-class Route {
-  String id;
-  List<Section> sections;
-  String routeHandle;
+class Routes {
+  String? id;
+  List<Sections>? sections;
+  String? routeHandle;
 
-  Route({
-    required this.id,
-    required this.sections,
-    required this.routeHandle,
-  });
+  Routes({this.id, this.sections, this.routeHandle});
 
-  factory Route.fromJson(Map<String, dynamic> json) => Route(
-        id: json["id"],
-        sections: List<Section>.from(
-            json["sections"].map((x) => Section.fromJson(x))),
-        routeHandle: json["routeHandle"],
-      );
+  Routes.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    if (json['sections'] != null) {
+      sections = <Sections>[];
+      json['sections'].forEach((v) {
+        sections!.add(new Sections.fromJson(v));
+      });
+    }
+    routeHandle = json['routeHandle'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "sections": List<dynamic>.from(sections.map((x) => x.toJson())),
-        "routeHandle": routeHandle,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.sections != null) {
+      data['sections'] = this.sections!.map((v) => v.toJson()).toList();
+    }
+    data['routeHandle'] = this.routeHandle;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Routes{id: $id, sections: $sections, routeHandle: $routeHandle}';
+  }
 }
 
-class Section {
-  String id;
-  String type;
-  List<Action> actions;
-  Arrival departure;
-  Arrival arrival;
-  Summary summary;
-  String polyline;
-  List<Notice> notices;
-  String language;
-  Transport transport;
+class Sections {
+  String? id;
+  String? type;
+  List<Actions>? actions;
+  Departure? departure;
+  Departure? arrival;
+  Summary? summary;
 
-  Section({
-    required this.id,
-    required this.type,
-    required this.actions,
-    required this.departure,
-    required this.arrival,
-    required this.summary,
-    required this.polyline,
-    required this.notices,
-    required this.language,
-    required this.transport,
-  });
+  String? language;
+  Transport? transport;
 
-  factory Section.fromJson(Map<String, dynamic> json) => Section(
-        id: json["id"],
-        type: json["type"],
-        actions:
-            List<Action>.from(json["actions"].map((x) => Action.fromJson(x))),
-        departure: Arrival.fromJson(json["departure"]),
-        arrival: Arrival.fromJson(json["arrival"]),
-        summary: Summary.fromJson(json["summary"]),
-        polyline: json["polyline"],
-        notices:
-            List<Notice>.from(json["notices"].map((x) => Notice.fromJson(x))),
-        language: json["language"],
-        transport: Transport.fromJson(json["transport"]),
-      );
+  Sections(
+      {this.id,
+      this.type,
+      this.actions,
+      this.departure,
+      this.arrival,
+      this.summary,
+      this.language,
+      this.transport});
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "type": type,
-        "actions": List<dynamic>.from(actions.map((x) => x.toJson())),
-        "departure": departure.toJson(),
-        "arrival": arrival.toJson(),
-        "summary": summary.toJson(),
-        "polyline": polyline,
-        "notices": List<dynamic>.from(notices.map((x) => x.toJson())),
-        "language": language,
-        "transport": transport.toJson(),
-      };
+  Sections.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    if (json['actions'] != null) {
+      actions = <Actions>[];
+      json['actions'].forEach((v) {
+        actions!.add(new Actions.fromJson(v));
+      });
+    }
+    departure = json['departure'] != null
+        ? new Departure.fromJson(json['departure'])
+        : null;
+    arrival = json['arrival'] != null
+        ? new Departure.fromJson(json['arrival'])
+        : null;
+    summary =
+        json['summary'] != null ? new Summary.fromJson(json['summary']) : null;
+
+    language = json['language'];
+    transport = json['transport'] != null
+        ? new Transport.fromJson(json['transport'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['type'] = this.type;
+    if (this.actions != null) {
+      data['actions'] = this.actions!.map((v) => v.toJson()).toList();
+    }
+    if (this.departure != null) {
+      data['departure'] = this.departure!.toJson();
+    }
+    if (this.arrival != null) {
+      data['arrival'] = this.arrival!.toJson();
+    }
+    if (this.summary != null) {
+      data['summary'] = this.summary!.toJson();
+    }
+
+    data['language'] = this.language;
+    if (this.transport != null) {
+      data['transport'] = this.transport!.toJson();
+    }
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Sections{id: $id, type: $type, actions: $actions, departure: $departure, arrival: $arrival, summary: $summary, language: $language, transport: $transport}';
+  }
 }
 
-class Action {
-  String action;
-  int duration;
-  int length;
-  String instruction;
-  int offset;
-  Direction? direction;
+class Actions {
+  String? action;
+  int? duration;
+  int? length;
+  String? instruction;
+  int? offset;
+  String? direction;
   String? severity;
+  int? exit;
 
-  Action({
-    required this.action,
-    required this.duration,
-    required this.length,
-    required this.instruction,
-    required this.offset,
-    this.direction,
-    this.severity,
-  });
+  Actions(
+      {this.action,
+      this.duration,
+      this.length,
+      this.instruction,
+      this.offset,
+      this.direction,
+      this.severity,
+      this.exit});
 
-  factory Action.fromJson(Map<String, dynamic> json) => Action(
-        action: json["action"],
-        duration: json["duration"],
-        length: json["length"],
-        instruction: json["instruction"],
-        offset: json["offset"],
-        direction: directionValues.map[json["direction"]]!,
-        severity: json["severity"],
-      );
+  Actions.fromJson(Map<String, dynamic> json) {
+    action = json['action'];
+    duration = json['duration'];
+    length = json['length'];
+    instruction = json['instruction'];
+    offset = json['offset'];
+    direction = json['direction'];
+    severity = json['severity'];
+    exit = json['exit'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "action": action,
-        "duration": duration,
-        "length": length,
-        "instruction": instruction,
-        "offset": offset,
-        "direction": directionValues.reverse[direction],
-        "severity": severity,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['action'] = this.action;
+    data['duration'] = this.duration;
+    data['length'] = this.length;
+    data['instruction'] = this.instruction;
+    data['offset'] = this.offset;
+    data['direction'] = this.direction;
+    data['severity'] = this.severity;
+    data['exit'] = this.exit;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Actions{action: $action, duration: $duration, length: $length, instruction: $instruction, offset: $offset, direction: $direction, severity: $severity, exit: $exit}';
+  }
 }
 
-enum Direction { LEFT, RIGHT }
+class Departure {
+  String? time;
+  Place? place;
 
-final directionValues =
-    EnumValues({"left": Direction.LEFT, "right": Direction.RIGHT});
+  Departure({this.time, this.place});
 
-class Arrival {
-  DateTime time;
-  Place place;
+  Departure.fromJson(Map<String, dynamic> json) {
+    time = json['time'];
+    place = json['place'] != null ? new Place.fromJson(json['place']) : null;
+  }
 
-  Arrival({
-    required this.time,
-    required this.place,
-  });
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['time'] = this.time;
+    if (this.place != null) {
+      data['place'] = this.place!.toJson();
+    }
+    return data;
+  }
 
-  factory Arrival.fromJson(Map<String, dynamic> json) => Arrival(
-        time: DateTime.parse(json["time"]),
-        place: Place.fromJson(json["place"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "time": time.toIso8601String(),
-        "place": place.toJson(),
-      };
+  @override
+  String toString() {
+    return 'Departure{time: $time, place: $place}';
+  }
 }
 
 class Place {
-  String type;
-  Location location;
-  Location originalLocation;
+  String? type;
+  Location? location;
+  Location? originalLocation;
 
-  Place({
-    required this.type,
-    required this.location,
-    required this.originalLocation,
-  });
+  Place({this.type, this.location, this.originalLocation});
 
-  factory Place.fromJson(Map<String, dynamic> json) => Place(
-        type: json["type"],
-        location: Location.fromJson(json["location"]),
-        originalLocation: Location.fromJson(json["originalLocation"]),
-      );
+  Place.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
+    originalLocation = json['originalLocation'] != null
+        ? Location.fromJson(json['originalLocation'])
+        : null;
+  }
 
-  Map<String, dynamic> toJson() => {
-        "type": type,
-        "location": location.toJson(),
-        "originalLocation": originalLocation.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = type;
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (originalLocation != null) {
+      data['originalLocation'] = originalLocation!.toJson();
+    }
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Place{type: $type, location: $location, originalLocation: $originalLocation}';
+  }
 }
 
 class Location {
-  double lat;
-  double lng;
+  double? lat;
+  double? lng;
 
-  Location({
-    required this.lat,
-    required this.lng,
-  });
+  Location({this.lat, this.lng});
 
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-        lat: json["lat"]?.toDouble(),
-        lng: json["lng"]?.toDouble(),
-      );
+  Location.fromJson(Map<String, dynamic> json) {
+    lat = json['lat'];
+    lng = json['lng'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "lat": lat,
-        "lng": lng,
-      };
-}
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lat'] = this.lat;
+    data['lng'] = this.lng;
+    return data;
+  }
 
-class Notice {
-  String title;
-  String code;
-  String severity;
-
-  Notice({
-    required this.title,
-    required this.code,
-    required this.severity,
-  });
-
-  factory Notice.fromJson(Map<String, dynamic> json) => Notice(
-        title: json["title"],
-        code: json["code"],
-        severity: json["severity"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "title": title,
-        "code": code,
-        "severity": severity,
-      };
+  @override
+  String toString() {
+    return 'Location{lat: $lat, lng: $lng}';
+  }
 }
 
 class Summary {
-  int duration;
-  int length;
-  int baseDuration;
+  int? duration;
+  int? length;
+  int? baseDuration;
 
-  Summary({
-    required this.duration,
-    required this.length,
-    required this.baseDuration,
-  });
+  Summary({this.duration, this.length, this.baseDuration});
 
-  factory Summary.fromJson(Map<String, dynamic> json) => Summary(
-        duration: json["duration"],
-        length: json["length"],
-        baseDuration: json["baseDuration"],
-      );
+  Summary.fromJson(Map<String, dynamic> json) {
+    duration = json['duration'];
+    length = json['length'];
+    baseDuration = json['baseDuration'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "duration": duration,
-        "length": length,
-        "baseDuration": baseDuration,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['duration'] = this.duration;
+    data['length'] = this.length;
+    data['baseDuration'] = this.baseDuration;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return 'Summary{duration: $duration, length: $length, baseDuration: $baseDuration}';
+  }
 }
 
 class Transport {
-  String mode;
+  String? mode;
 
-  Transport({
-    required this.mode,
-  });
+  Transport({this.mode});
 
-  factory Transport.fromJson(Map<String, dynamic> json) => Transport(
-        mode: json["mode"],
-      );
+  Transport.fromJson(Map<String, dynamic> json) {
+    mode = json['mode'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "mode": mode,
-      };
-}
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['mode'] = this.mode;
+    return data;
+  }
 
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
+  @override
+  String toString() {
+    return 'Transport{mode: $mode}';
   }
 }
